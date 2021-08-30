@@ -1,0 +1,3010 @@
+swagger: '2.0'
+info:
+  version: 0.0.21
+  title: TargControl External API
+  description: ''
+securityDefinitions:
+  APIKeyHeader:
+    type: apiKey
+    in: header
+    name: X-API-Key
+    description: Ключ к внешнему API. Получается из основного Web-приложения
+security:
+  - APIKeyHeader: [ ]
+host: cloud.targcontrol.com
+schemes:
+  - https
+paths:
+  '/external/api/time-sheets':
+    post:
+      operationId: get-time-sheets-for-month
+      summary: Get Time Sheets For Month
+      tags:
+        - Time Sheets
+      parameters:
+        - name: month
+          in: body
+          schema:
+            $ref: '#/definitions/time-sheet-employee-request'
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/time-sheet-employee'
+  /external/api/employee-profile/categories:
+    get:
+      operationId: get-employee-profile-categories
+      summary: Получить все категории профиля сотрудников
+      description: Получаются категории профиля сотрудников
+      tags:
+        - Employee Profile
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/employee-profile-category'
+  /external/api/employee-profile/fields:
+    get:
+      operationId: get-employee-profile-fields
+      summary: Получить все поля профиля сотрудников
+      description: Получаются поля профиля сотрудников
+      tags:
+        - Employee Profile
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/employee-profile-field'
+  /external/api/employee-schedules/calendar/types:
+    get:
+      operationId: list-calendar-event-types
+      summary: Получить все типы календарных событий
+      tags:
+        - Employee Schedules
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/time-calendar-event-type'
+  /external/api/employee-categories:
+    get:
+      operationId: get-employee-categories
+      summary: Получить все категории сотрудников
+      description: |
+        Получаются все сотрудники в организации
+      tags:
+        - Employee Categories
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/employee-category'
+  /external/api/employee-tags:
+    get:
+      operationId: get-employee-tags
+      summary: Получить все метки сотрудников
+      description: |
+        Получаются все мeтки сотрудников в организации
+      tags:
+        - Employee Tags
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/employee-tag'
+  /external/api/employee-positions:
+    get:
+      operationId: get-employee-positions
+      summary: Получить все должности сотрудников
+      description: |
+        Получаются все должности в организации
+      tags:
+        - Employee Positions
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/employee-position'
+  /external/api/employee-pass-types:
+    get:
+      operationId: get-employee-pass-types
+      summary: Получить типы пропусков сотрудников
+      tags:
+        - Employee Passes
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/employee-pass-type'
+  /external/api/employee-passes/query:
+    get:
+      operationId: get-all-employee-passes
+      summary: Получить все пропуска сотрудников
+      description: |
+        Получаются все пропуска в организации
+      tags:
+        - Employee Passes
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/employee-pass'
+    post:
+      operationId: get-filtered-employee-passes
+      summary: Получить отфильтрованные пропуска сотрудников
+      tags:
+        - Employee Passes
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/employee-pass-query-request'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/employee-pass'
+  /external/api/employee-passes/create:
+    post:
+      operationId: create-employee-pass
+      summary: Создать новый пропуск
+      tags:
+        - Employee Passes
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/employee-pass-crud-request'
+      responses:
+        '201':
+          description: CREATED
+          schema:
+            $ref: '#/definitions/employee-pass'
+  '/external/api/employee-passes/update/{passId}':
+    put:
+      operationId: update-employee-pass
+      summary: Изменить пропуск сотрудника
+      tags:
+        - Employee Passes
+      parameters:
+        - name: passId
+          in: path
+          required: true
+          type: string
+          format: uuid
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/employee-pass-crud-request'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/employee-pass'
+  '/external/api/employee-passes/delete/{passId}':
+    delete:
+      operationId: delete-employee-pass
+      summary: Удалить пропуск сотрудника
+      tags:
+        - Employee Passes
+      parameters:
+        - name: passId
+          in: path
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: NO CONTENT
+  /external/api/employee-paper-types:
+    get:
+      operationId: get-all-employee-paper-types
+      summary: Получить типы документов сотрудников
+      tags:
+        - Employee Papers
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/employee-paper-type'
+  /external/api/employee-papers/query:
+    get:
+      operationId: get-all-employee-papers
+      summary: Получить все документы сотрудников
+      tags:
+        - Employee Papers
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/employee-paper'
+    post:
+      operationId: get-filtered-employee-papers
+      summary: Получить отфильтрованные документы сотрудников
+      tags:
+        - Employee Papers
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/employee-paper-query-request'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/employee-paper'
+  /external/api/employee-photo/{employeeId}/upload:
+    post:
+      operationId: add-photo
+      summary: Добавить фотографию для сотрудника
+      description: |
+        Добавить фотографию для сотрудника
+      tags:
+        - Employee Photo
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: employeeId
+          in: path
+          required: true
+          type: string
+          format: uuid
+        - name: file
+          in: formData
+          type: file
+          description: Фото сотрудника
+      responses:
+        '201':
+          description: CREATED
+  /external/api/employee-photo/{employeeId}/delete:
+    delete:
+      operationId: delete-photo
+      summary: Удалить фото у сотрудника
+      description: |
+        Удалить фотографию у сотрудника
+      tags:
+        - Employee Photo
+      parameters:
+        - name: employeeId
+          in: path
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: NO CONTENT
+  /external/api/access-points:
+    get:
+      operationId: get-all-access-points
+      summary: Получить все точки доступа
+      tags:
+        - Access Points
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/access-point'
+  /external/api/time-tracking-statistics:
+    post:
+      operationId: get-time-tracking-statistics
+      summary: Получить статистику учёта рабочего времени
+      tags:
+        - Time Tracking Statistics
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/time-tracking-statistics-request'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/employee-work-statistics'
+  /external/api/employee-groups/query:
+    get:
+      operationId: get-all-employee-groups
+      summary: Получить все группы сотрудников
+      tags:
+        - Employee Groups
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/employee-group'
+    post:
+      operationId: get-filtered-employee-groups
+      summary: Получить отфильтрованные группы сотрудников
+      tags:
+        - Employee Groups
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/employee-group-query-request'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/employee-group'
+  /external/api/employee-identifiers/query:
+    get:
+      operationId: get-all-identifiers
+      summary: Получить все идентификаторы
+      tags:
+        - Employee Identifiers
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/employee-identifiers-response'
+  '/external/api/employee-identifiers/query/{employeeId}':
+    get:
+      operationId: get-single-employee-identifier
+      summary: Получить идентификаторы одного сотрудника
+      tags:
+        - Employee Identifiers
+      parameters:
+        - name: employeeId
+          in: path
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/employee-identifiers-response'
+  '/external/api/employee-identifiers/create/{employeeId}':
+    post:
+      operationId: create-employee-identifiers
+      summary: Создать идентификаторы сотрудника
+      tags:
+        - Employee Identifiers
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/employee-identifiers-query'
+        - name: employeeId
+          in: path
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '201':
+          description: CREATED
+          schema:
+            $ref: '#/definitions/employee-identifiers-response'
+  '/external/api/employee-identifiers/update/{employeeId}':
+    post:
+      operationId: update-employee-identifiers
+      summary: Обновить идентификаторы сотрудника
+      tags:
+        - Employee Identifiers
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/employee-identifiers-query'
+        - name: employeeId
+          in: path
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/employee-identifiers-response'
+  '/external/api/employee-identifiers/delete/{employeeId}/{fingerType}':
+    delete:
+      operationId: delete-employee-fingerprints
+      summary: Удалить отпечатки сотрудника
+      tags:
+        - Employee Identifiers
+      parameters:
+        - name: employeeId
+          in: path
+          required: true
+          type: string
+          format: uuid
+        - name: fingerType
+          in: path
+          required: true
+          type: string
+      responses:
+        '204':
+          description: NO CONTENT
+  /external/api/employees/query:
+    get:
+      operationId: get-all-employees
+      summary: Получить всех сотрудников
+      tags:
+        - Employees
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/employee'
+    post:
+      operationId: get-filtered-employees
+      summary: Получить отфильтрованных сотрудников
+      tags:
+        - Employees
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/employee-query-request'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/employee'
+  /external/api/employees/create:
+    post:
+      operationId: create-employee
+      summary: Создать нового сотрудника
+      tags:
+        - Employees
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/employee-simplified-input'
+      responses:
+        '201':
+          description: CREATED
+          schema:
+            $ref: '#/definitions/employee-simplified-output'
+  '/external/api/employees/update/{id}':
+    put:
+      operationId: update-employee
+      summary: Изменить основные данные сотрудника
+      tags:
+        - Employees
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          format: uuid
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/employee-simplified-input'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/employee-simplified-output'
+  '/external/api/employees/delete/{id}':
+    delete:
+      operationId: delete-employee
+      summary: Удалить сотрудника
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: NO CONTENT
+      tags:
+        - Employees
+  /external/api/access-events/query:
+    get:
+      operationId: get-all-access-events
+      summary: Получить все события доступа
+      tags:
+        - Access Events
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/access-event'
+    post:
+      operationId: get-filtered-access-events
+      summary: Получить отфильтрованные события доступа
+      tags:
+        - Access Events
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/access-event-query-request'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/access-event'
+  /external/api/time-tracking-contours:
+    get:
+      operationId: get-all-time-tracking-contours
+      summary: Получить контуры учета рабочего времени
+      tags:
+        - Time Tracking Objects
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/time-tracking-contour'
+  /external/api/time-tracking-offices:
+    get:
+      operationId: get-all-time-tracking-offices
+      summary: Получить объекты учета рабочего времени (legacy)
+      tags:
+        - Time Tracking Objects
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/time-tracking-object'
+  /external/api/time-tracking-objects:
+    get:
+      operationId: get-all-time-tracking-objects
+      summary: Получить объекты учета рабочего времени
+      tags:
+        - Time Tracking Objects
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/time-tracking-object'
+  /external/api/employee-schedules/interval/query:
+    post:
+      summary: Получить отфильтрованные рабочие графики без повторений
+      operationId: get-filtered-schedule-intervals
+      tags:
+        - Employee Schedules
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/employee-schedule-query'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/employee-schedule-interval'
+  /external/api/employee-schedules/recurrence-interval/query:
+    post:
+      summary: Получить отфильтрованные рабочие графики с повторениями
+      operationId: get-filtered-recurrence-schedule-intervals
+      tags:
+        - Employee Schedules
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/employee-schedule-query'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/employee-schedule-recurrence-interval'
+  /external/api/employee-schedules/calendar/query:
+    post:
+      summary: Получить отфильтрованные календарные события
+      tags:
+        - Employee Schedules
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/time-calendar-event'
+      operationId: get-filtered-calendar-events
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/employee-schedule-query'
+  /external/api/access-events/sync:
+    post:
+      summary: Добавить события доступа
+      tags:
+        - Access Events
+      responses:
+        '201':
+          description: CREATED
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/access-event'
+      operationId: save-access-events
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/access-event-sync'
+definitions:
+  employee-rfid:
+    title: Rfid сотрудника
+    type: object
+    properties:
+      id:
+        type: string
+        description: Идентификатор RFID
+        format: uuid
+      code:
+        type: string
+        description: 'Код, связанный с RFID'
+        format: byte
+      type:
+        $ref: '#/definitions/employee-rfid-type'
+      employeeId:
+        type: string
+        description: 'Идентификатор сотрудника, которому принадлежит RFID'
+        format: uuid
+    required:
+      - id
+      - code
+      - type
+      - employeeId
+  employee-account:
+    title: Аккаунт сотрудника
+    type: object
+    properties:
+      accountId:
+        type: string
+        description: 'Идентификатор аккаунта, связанного с сотрудником'
+        format: uuid
+      accountStatus:
+        $ref: '#/definitions/employee-account-status'
+    required:
+      - accountStatus
+  base-work-interval:
+    title: Главный рабочий интервал
+    allOf:
+      - $ref: '#/definitions/combined-interval'
+      - type: object
+        properties:
+          timeTrackingIntervalId:
+            type: string
+            format: uuid
+            description: id интервала
+          reasonId:
+            type: string
+            format: uuid
+            description: id причины
+          timeTrackingContourId:
+            type: string
+            format: uuid
+            description: id контура
+          lastInterval:
+            type: boolean
+            description: Последний интервал
+          lastOpenInterval:
+            type: boolean
+            description: Последний открытый интервал
+          accounted:
+            type: boolean
+            description: Учтен
+          scheduleEventId:
+            type: string
+            format: uuid
+            description: id события графика
+        required:
+          - lastInterval
+          - lastOpenInterval
+          - accounted
+  employee-schedule-interval:
+    title: График без повторений
+    type: object
+    description: Содержит график сотрудника в течении указаного промежутка времени без повторений
+    properties:
+      id:
+        type: string
+        description: Уникальный идентификатор графика
+        format: uuid
+      employeeId:
+        type: string
+        description: 'Идентификатор сотрудника, которому принадлежит график'
+        format: uuid
+      intervalStart:
+        type: string
+        description: Дата начала графика
+        format: date-time
+      intervalEnd:
+        type: string
+        description: Дата окончания графика
+        format: date-time
+      positionId:
+        type: string
+        description: Идентификатор позиции сотрудника
+        format: uuid
+      strictLunch:
+        type: boolean
+        description: Строгий ли обед
+      paidLunch:
+        type: boolean
+        description: Оплачен ли обед
+      shortened:
+        type: boolean
+        description: Укорочен ли день
+  employee-schedule-recurrence-interval:
+    title: График с повторениями
+    type: object
+    description: Содержит график сотрудника в течении указаного промежутка времени с повторением
+    properties:
+      id:
+        type: string
+        description: Уникальный идентификатор графика
+        format: uuid
+      employeeId:
+        type: string
+        description: 'Идентификатор сотрудника, которому принадлежит график'
+        format: uuid
+      description:
+        type: string
+        description: Описание события
+      start:
+        type: string
+        description: Дата начала графика
+        format: date-time
+      end:
+        type: string
+        description: Дата окончания графика
+        format: date-time
+      recurrenceRule:
+        type: string
+        description: Правила повторения графиков
+      recurrenceId:
+        type: string
+        description: Идентификатор повторения
+      recurrenceException:
+        type: string
+        description: Список исключённых времён начала событий
+      edited:
+        type: boolean
+        description: Укорочен ли день
+      color:
+        type: string
+        description: Цвет графика
+      allDay:
+        type: boolean
+        description: Работает ли сотрудник весь день
+      positionId:
+        type: string
+        description: Идентификатор позиции сотрудника
+        format: uuid
+      strictLunch:
+        type: boolean
+        description: Строгий ли обед
+      paidLunch:
+        type: boolean
+        description: Оплачен ли обед
+      lunches:
+        items:
+          $ref: '#/definitions/employee-schedule-lunch'
+        type: array
+      hasLunch:
+        type: boolean
+        description: Имеет ли сотрудник обед
+  employee-group:
+    title: Группа сотрудников
+    type: object
+    properties:
+      id:
+        type: string
+        description: Идентификатор группы сотрудников
+        format: uuid
+      name:
+        type: string
+        description: Имя группы сотрудников
+      parentId:
+        type: string
+        description: Идентификатор группы-родителя
+        format: uuid
+      number:
+        type: string
+        description: Номер группы сотрудников
+        minLength: 4
+        maxLength: 4
+    required:
+      - id
+      - name
+  time-sheet-employee-request:
+    title: Данные для запроса
+    type: object
+    description: 'Содержит в себе дату, которая используется для поиска табеля рабочего времени сотрудника'
+    properties:
+      month:
+        type: string
+        description: 'Дата, когда был создан рабочий табель сотрудника'
+        format: date
+    required:
+      - month
+  employee-paper:
+    title: Документ сотрудника
+    type: object
+    properties:
+      id:
+        type: string
+        description: Идентификатор документа сотрудника
+        format: uuid
+      employeeId:
+        type: string
+        description: 'Идентификатор сотрудника, которому принадлежит документ'
+        format: uuid
+      description:
+        type: string
+        description: Описание документа сотрудника
+      startDate:
+        type: string
+        description: Начало действия документа сотрудника
+        format: date-time
+      endDate:
+        type: string
+        description: Окончание действия документа сотрудника
+        format: date-time
+      typeId:
+        type: string
+        description: Идентификатор типа документа сотрудника
+        format: uuid
+    required:
+      - id
+      - employeeId
+      - startDate
+      - typeId
+  employee-field:
+    description: Если поле не имеет идентификатора категории, то оно принадлежит личным данным
+    title: Дополнительное поле сотрудника
+    type: object
+    properties:
+      id:
+        type: string
+        description: Идентификатор поля сотрудника
+        format: uuid
+      employeeId:
+        type: string
+        description: Идентификатор сотрудника, которому принадлежит поле
+        format: uuid
+      name:
+        type: string
+        description: Название поля сотрудника
+      value:
+        type: string
+        description: Значение поля сотрудника
+    required:
+      - id
+      - name
+      - value
+  access-event-sync:
+    title: Запрос для добавления событий доступа
+    type: object
+    properties:
+      accessEvents:
+        type: array
+        items:
+          $ref: '#/definitions/access-event-view-model'
+        description: Список событий доступа
+  employee-pass-crud-request:
+    title: Запрос для создания и редактирования сотрудника
+    type: object
+    properties:
+      employeeId:
+        type: string
+        description: 'Идентификатор сотрудника, которому принадлежит пропуск'
+        format: uuid
+      banned:
+        type: boolean
+        description: Заблокирован ли пропуск
+      typeId:
+        type: string
+        description: Идентификатор типа пропуска
+        format: uuid
+      startDate:
+        type: string
+        description: Дата начала действия пропуска
+        format: date-time
+      endDate:
+        type: string
+        description: Дата окончания действия пропуска
+        format: date-time
+      currentCount:
+        type: integer
+        description: Текущее количество проходов по пропуску
+        minimum: 0
+        default: 0
+    required:
+      - employeeId
+      - banned
+      - typeId
+      - startDate
+      - currentCount
+  employee-simplified-input:
+    title: Запрос на изменение Сотрудника
+    description: Содержит в себе основные поля для создания сотрудника
+    type: object
+    x-tags:
+      - Employees
+    properties:
+      name:
+        $ref: '#/definitions/employee-name'
+      number:
+        type: string
+        description: Идентификационный номер сотрудника
+      email:
+        type: string
+        description: Адрес электронной почты
+        format: email
+      phone:
+        type: string
+        description: Телефон сотрудника
+      dateOfBirth:
+        type: string
+        description: Дата рождения
+        format: date
+      groupId:
+        type: string
+        description: 'Идентификатор группы сотрудника, которой он принадлежит'
+        format: uuid
+      papers:
+        type: array
+        description: Список документов сотрудника
+        uniqueItems: true
+        items:
+          $ref: '#/definitions/employee-paper'
+      passes:
+        type: array
+        description: Список пропусков сотрудника
+        uniqueItems: true
+        items:
+          $ref: '#/definitions/employee-pass'
+      positionAssignments:
+        type: array
+        description: Список назначений сотрудника на должности
+        uniqueItems: true
+        items:
+          $ref: '#/definitions/employee-position-assignment'
+      categories:
+        type: array
+        description: Список категорий сотрудника
+        uniqueItems: true
+        items:
+          $ref: '#/definitions/employee-category'
+      profileFieldValues:
+        type: array
+        description: Список значений полей профиля сотрудника
+        uniqueItems: true
+        items:
+          $ref: '#/definitions/employee-profile-field-value'
+      fields:
+        type: array
+        description: Список полей сотрудника
+        uniqueItems: true
+        items:
+          $ref: '#/definitions/employee-field'
+      tags:
+        type: array
+        description: Список меток сотрудника
+        uniqueItems: true
+        items:
+          $ref: '#/definitions/employee-category'
+  employee-identifiers-query:
+    title: Запрос на создание идентификаторов сотрудника
+    description: 'Содержит информацию о pin, rfid, fingerprints и macAddress для создания и редактирования идентификаторов'
+    type: object
+    properties:
+      pin:
+        type: string
+        description: Пин-код сотрудника
+      macAddress:
+        type: string
+        description: Мак адрес сотрудника
+      rfid:
+        $ref: '#/definitions/employee-rfid'
+      fingerprint:
+        $ref: '#/definitions/employee-fingerprint'
+  time-tracking-statistics-request:
+    title: Запрос статистики учёта рабочего времени
+    description: Список сотрудников и временной интервал для получения инструктажей и справок
+    type: object
+    properties:
+      start:
+        type: string
+        format: date
+        description: Дата и время начала формирования запроса
+      end:
+        type: string
+        format: date
+        description: Дата и время окончания формирования запроса
+      employeeIds:
+        type: array
+        description: 'Определяет список сотрудников, для которых будет происходит поиск сущностей'
+        uniqueItems: true
+        items:
+          type: string
+          format: uuid
+      timeTrackingContourIds:
+        type: array
+        description: 'Список идентификаторов контуров учёта рабочего времени, по которым будет происходить подсчёт'
+        uniqueItems: true
+        items:
+          type: string
+          format: uuid
+      timeTrackingOfficeIds:
+        type: array
+        description: 'Список идентификаторов офисов учёта рабочего времени, по которым будет происходить подсчёт'
+        uniqueItems: true
+        items:
+          type: string
+          format: uuid
+    required:
+      - start
+      - end
+      - employeeIds
+  employee-profile-field-value:
+    title: Значение поля профиля сотрудника
+    type: object
+    properties:
+      id:
+        type: string
+        description: Идентификатор значения поля профиля сотрудника
+        format: uuid
+      fieldId:
+        type: string
+        format: uuid
+        description: Идентификатор поля профиля сотрудника
+      value:
+        type: string
+        description: Непосредственно значение поля профиля сотрудника
+  access-event-access-reason-value:
+    title: Значение причины доступа события доступа
+    type: object
+    description: 'Значения причины доступа, которые пользоваетель выбрал при входе'
+    properties:
+      reasonId:
+        type: string
+        description: Идентификатор использованной причины
+        format: uuid
+      direction:
+        $ref: '#/definitions/access-event-access-reason-direction-type'
+      description:
+        type: string
+        description: 'Опциональное описание, вводимое сотрудником'
+      orderNumber:
+        type: integer
+        description: |
+          Порядок, в котором была выбрана данная причина (если было выбрано __несколько__ причин за раз - например, завершение обеда и начало рабочего интервала)
+        minimum: 0
+    required:
+      - reasonId
+      - direction
+      - orderNumber
+  access-event-document-value:
+    title: Значение документов и пропусков события доступа
+    type: object
+    properties:
+      id:
+        type: string
+        description: 'Идентификатор документа (инструктажа или справки) или пропуска, который проверялся при проходе'
+        format: uuid
+      typeId:
+        type: string
+        description: 'Идентификатор типа документа (инструктажа или справки) или пропуска, который проверялся при проходе'
+        format: uuid
+      documentType:
+        $ref: '#/definitions/access-event-document-type'
+    required:
+      - id
+      - typeId
+      - documentType
+  access-event-identifier:
+    title: Идентификатор события доступа
+    type: object
+    description: 'Идентификатор, который был использован при идентификации сотрудника в событии доступа'
+    properties:
+      type:
+        $ref: '#/definitions/access-event-identifier-type'
+      fingerprintType:
+        $ref: '#/definitions/fingerprint-type'
+      rfidId:
+        type: string
+        description: Использованный при проходе идентификатор RFID
+        format: byte
+    required:
+      - type
+  employee-identifiers-response:
+    title: Идентификаторы сотрудника
+    description: 'Содержит информацию о pin, rfid, fingerprints сотрудника'
+    type: object
+    properties:
+      id:
+        type: string
+        description: Уникальный идентификатор сотрудника
+        format: uuid
+      pin:
+        type: string
+        description: Пин-код сотрудника
+      macAddress:
+        type: string
+        description: Мак адрес сотрудника
+      rfids:
+        type: array
+        description: RFID идентификаторы сотрудника
+        uniqueItems: true
+        items:
+          $ref: '#/definitions/employee-rfid'
+      fingerprints:
+        type: array
+        description: Отпучатки сотрудника
+        uniqueItems: true
+        items:
+          $ref: '#/definitions/employee-fingerprint'
+  employee-identifiers:
+    title: Идентификаторы сотрудника
+    type: object
+    properties:
+      pin:
+        type: string
+        description: Пин-код сотрудника
+      macAddress:
+        type: string
+        description: Мак адрес сотрудника
+      rfids:
+        type: array
+        description: RFID идентификаторы сотрудника
+        uniqueItems: true
+        items:
+          $ref: '#/definitions/employee-rfid'
+      fingerprints:
+        type: array
+        description: Отпучатки сотрудника
+        uniqueItems: true
+        items:
+          $ref: '#/definitions/employee-fingerprint'
+    required:
+      - rfids
+      - fingerprints
+  employee-name:
+    title: Имя сотрудника
+    type: object
+    properties:
+      firstName:
+        type: string
+        description: Имя
+      lastName:
+        type: string
+        description: Фамилия
+      middleName:
+        type: string
+        description: Отчество/среднее имя
+  position-interval:
+    title: Интервал должности
+    type: object
+    properties:
+      intervalStart:
+        type: string
+        format: date-time
+        description: время начала интервала
+      intervalEnd:
+        type: string
+        format: date-time
+        description: время окончания интервала
+      positionId:
+        type: string
+        format: uuid
+        description: id должности
+    required:
+      - positionId
+  lunch-break-interval:
+    title: Интервал обеда
+    allOf:
+      - $ref: '#/definitions/combined-interval'
+      - type: object
+        properties:
+          scheduleEventId:
+            type: string
+            format: uuid
+            description: id события расписания
+          breakDurationMillis:
+            type: integer
+            format: int64
+            description: Время обеда в миллисекундах
+        required:
+          - scheduleEventId
+          - breakDurationMillis
+  reason-interval:
+    title: Интервал причины
+    allOf:
+      - $ref: '#/definitions/combined-interval'
+      - type: object
+        properties:
+          timeTrackingReasonedIntervalId:
+            type: string
+            format: uuid
+            description: Идентификатор внешнего интервала
+          reasonId:
+            type: string
+            format: uuid
+            description: id причины
+          timeType:
+            $ref: '#/definitions/interval-time-type'
+          scheduleEventId:
+            type: string
+            format: uuid
+            description: id события расписания
+        required:
+          - timeTrackingReasonedIntervalId
+          - timeType
+  work-shift-interval:
+    title: Интервал рабочего дня
+    type: object
+    description: |
+      Интервал рабочего дня --- сущность, которая отвязана от календарного дня.
+      Например, рабочий день может начинаться в 12:00 текущего календарного дня и заканчиваться в 12:00 следующего дня.
+      Таким образом, например, можно переместить все рабочие интервалы сотрудников, работающих в ночную смену, в один рабочий день, даже несмотря на то, что с календарной точки зрения это разные дни.
+      Ограничения:
+        1. может быть только один рабочий день с указанной датой для каждого конкретного сотрудника,
+        2. рабочие дни не могут пересекаться
+        3. рабочие дни не могут оставлять пустот между собой. Так, если предыдущий рабочий день закончился в 12:00 текущего календарного дня, то следующий рабочий день тоже должен начаться в 12:00
+    properties:
+      shiftDate:
+        type: string
+        format: date
+        description: Дата рабочего дня
+      shiftType:
+        $ref: '#/definitions/work-shift-type'
+      intervalStart:
+        type: string
+        format: date-time
+        description: Время начала рабочего дня
+      intervalEnd:
+        type: string
+        format: date-time
+        description: Время окончания рабочего дня
+      intervals:
+        type: array
+        description: 'Комбинированный список интервалов, содержащий непересекающуюся последовательность'
+        items:
+          $ref: '#/definitions/combined-interval'
+      unprocessedWorkIntervals:
+        type: array
+        description: Список рабочих интервалов сотрудника
+        items:
+          $ref: '#/definitions/base-work-interval'
+      unprocessedReasonIntervals:
+        type: array
+        description: Список причинных интервалов сотрудника
+        items:
+          $ref: '#/definitions/reason-interval'
+      unprocessedScheduleIntervals:
+        type: array
+        description: Список интервалов расписания сотрудника
+        items:
+          $ref: '#/definitions/schedule-interval'
+      uncutScheduleIntervals:
+        type: array
+        description: Список интервалов расписания сотрудника
+        items:
+          $ref: '#/definitions/schedule-interval'
+      unprocessedCalendarInterval:
+        type: array
+        description: Список календарных интервалов сотрудника
+        items:
+          $ref: '#/definitions/calendar-interval'
+      lunchBreakIntervals:
+        type: array
+        description: Список интервалов перерывов на обед
+        items:
+          $ref: '#/definitions/lunch-break-interval'
+      positionIntervals:
+        type: array
+        description: Список интервалов занятия сотрудником определённой должности
+        items:
+          $ref: '#/definitions/position-interval'
+      employeeMarks:
+        type: array
+        description: 'Список оценок, поствавленных сотруднику в текущий рабочий день'
+        items:
+          $ref: '#/definitions/employee-mark'
+      accessSequenceFouls:
+        type: array
+        description: Нарушения последовательности проходов
+        items:
+          $ref: '#/definitions/access-sequence-foul'
+      statistics:
+        $ref: '#/definitions/work-shift-interval-statistics'
+      workTimeStart:
+        type: string
+        format: date-time
+        description: Время начала первого рабочего интервала в этот рабочий день
+      workTimeEnd:
+        type: string
+        format: date-time
+        description: Время окончания последнего рабочего интервала в этот рабочий день
+      attended:
+        type: boolean
+        description: Было ли отмечено посещение сотрудником в данный рабочий день
+      scheduleStart:
+        type: string
+        format: date-time
+        description: Время начала первого интервала расписания в этот рабочий день
+      scheduleEnd:
+        type: string
+        format: date-time
+        description: Время окончания последнего интервала расписания в этот рабочий день
+      currentShift:
+        type: boolean
+        description: Является ли этот рабочий день текущим
+      currentlyPresent:
+        type: boolean
+        description: Присутствует ли сотрудник на момент получения статистики
+    required:
+      - shiftDate
+      - shiftType
+      - intervalStart
+      - intervalEnd
+      - intervals
+      - unprocessedWorkIntervals
+      - unprocessedReasonIntervals
+      - unprocessedScheduleIntervals
+      - uncutScheduleIntervals
+      - unprocessedCalendarInterval
+      - lunchBreakIntervals
+      - positionIntervals
+      - employeeMarks
+      - accessSequenceFouls
+      - statistics
+      - attended
+      - currentShift
+      - currentlyPresent
+  schedule-interval:
+    title: Интервал расписания
+    allOf:
+      - $ref: '#/definitions/combined-interval'
+      - type: object
+        properties:
+          scheduleEventId:
+            type: string
+            format: uuid
+            description: id события расписания
+          timeType:
+            $ref: '#/definitions/interval-time-type'
+        required:
+          - scheduleEventId
+          - timeType
+  time-calendar-event:
+    title: Календарное событие
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      employeeId:
+        type: string
+        format: uuid
+      typeId:
+        type: string
+        format: uuid
+      start:
+        type: string
+        format: date-time
+      end:
+        type: string
+        format: date-time
+      description:
+        type: string
+      confirmed:
+        type: boolean
+      allDay:
+        type: boolean
+    required:
+      - id
+      - employeeId
+      - typeId
+      - start
+      - end
+      - confirmed
+      - allDay
+    x-tags:
+      - Time Calendar Events
+    description: ''
+  employee-schedule-event:
+    title: Календарное событие
+    type: object
+    description: Содержит календарные события сотрудника в течении указаного промежутка времени
+    properties:
+      id:
+        type: string
+        description: Уникальный идентификатор календарного события
+        format: uuid
+      eventDate:
+        type: string
+        description: 'Время, когда это событие было сформировано на контроллере'
+        format: date-time
+      description:
+        type: string
+        description: Описание события
+      type:
+        $ref: '#/definitions/employee-schedule-work-calendar-event-type'
+    required:
+      - id
+      - eventDate
+      - type
+  calendar-interval:
+    title: Календарный интервал
+    allOf:
+      - $ref: '#/definitions/combined-interval'
+      - type: object
+        properties:
+          calendarEventId:
+            type: string
+            format: uuid
+            description: id календарного события
+          calendarEventTypeId:
+            type: string
+            format: uuid
+            description: id типа календарного события
+          countsAsWorkTime:
+            type: boolean
+            description: Учитывать как рабочее время
+        required:
+          - calendarEventId
+          - calendarEventTypeId
+          - countsAsWorkTime
+  employee-profile-category:
+    title: Категория профиля сотрудников
+    type: object
+    properties:
+      id:
+        type: string
+        description: Идентификатор категории профиля сотрудников
+        format: uuid
+      name:
+        type: string
+        description: Имя категории профиля сотрудников
+    required:
+      - id
+      - name
+  employee-category:
+    title: Категория сотрудников
+    type: object
+    properties:
+      id:
+        type: string
+        description: Идентификатор категории сотрудников
+        format: uuid
+      name:
+        type: string
+        description: Имя категории сотрудников
+    required:
+      - id
+      - name
+  time-tracking-contour:
+    title: Контур
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      officeId:
+        type: string
+        format: uuid
+      name:
+        type: string
+        format: string
+      accessPoints:
+        type: array
+        items:
+          $ref: '#/definitions/time-tracking-contour-access-point'
+    required:
+      - id
+      - officeId
+      - name
+  access-event-coordinates:
+    title: Координаты события доступа
+    type: object
+    description: 'Координаты, которые были зафиксированы при создании события'
+    properties:
+      latitude:
+        description: Широта
+        type: number
+      longitude:
+        description: Долгота
+        type: number
+      accuracy:
+        description: 'Радиус, в котором с 68%-ной вероятностью будут находиться реальные координаты объекта'
+        type: number
+    required:
+      - latitude
+      - longitude
+      - accuracy
+  access-point-coordinates:
+    title: Координаты события доступа
+    type: object
+    description: 'Координаты, которые были зафиксированы при создании события'
+    properties:
+      latitude:
+        description: Широта
+        type: number
+      longitude:
+        description: Долгота
+        type: number
+    required:
+      - latitude
+      - longitude
+  employee-tag:
+    title: Метки сотрудников
+    type: object
+    properties:
+      id:
+        type: string
+        description: Идентификатор метки сотрудников
+        format: uuid
+      name:
+        type: string
+        description: Имя метки сотрудников
+    required:
+      - id
+      - name
+  employee-position-assignment:
+    title: Назначение сотрудника на должность
+    type: object
+    properties:
+      id:
+        type: string
+        description: Идентификатор назначения
+        format: uuid
+      employeeId:
+        type: string
+        description: Идентификатор сотрудника
+        format: uuid
+      position:
+        description: Позиция сотрудника
+        $ref: '#/definitions/employee-position'
+      assignedFrom:
+        type: string
+        description: Дата начала назначения
+        format: date-time
+      assignedTo:
+        type: string
+        description: Дата окончания назначения
+        format: date-time
+      wageRateHours:
+        type: number
+        description: Ставка
+        minimum: 0
+        exclusiveMinimum: false
+      paymentRatePerHour:
+        type: number
+        description: Оплата за час
+        minimum: 0
+      personnelNumber:
+        type: string
+        description: Табельный номер
+      type:
+        $ref: '#/definitions/employee-position-assignment-type'
+    required:
+      - id
+      - employeeId
+      - position
+      - assignedFrom
+      - type
+  employee-part-time-position-assignment:
+    title: Назначение сотрудника на совмещение
+    type: object
+    properties:
+      id:
+        type: string
+        description: Идентификатор совмещения
+        format: uuid
+      employeeId:
+        type: string
+        description: Идентификатор сотрудника
+        format: uuid
+      positionId:
+        type: string
+        description: Идентификатор должности
+        format: uuid
+      assignedFrom:
+        type: string
+        description: Дата начала назначения
+        format: date-time
+      assignedTo:
+        type: string
+        description: Дата окончания назначения
+        format: date-time
+      paymentRatePerHour:
+        type: number
+        description: Оплата за час
+        minimum: 0
+      personnelNumber:
+        type: string
+        description: Табельный номер
+    required:
+      - id
+      - employeeId
+      - positionId
+      - assignedFrom
+  access-event-direction:
+    title: Направление события доступа
+    type: string
+    description: |
+      Направление, в котором был зафиксирован проход.
+      Может быть относительным, если используется многоконтурная система.
+        * `in` --- Направление на вход
+        * `out` --- Направление на выход
+        * `unknown` --- Направление не определено
+    enum:
+      - in
+      - out
+      - unknown
+  access-sequence-foul:
+    title: Нарушение последовательности прохода
+    type: object
+    properties:
+      type:
+        $ref: '#/definitions/access-sequence-foul-type'
+      occurrenceTime:
+        type: string
+        format: date-time
+        description: Время нарушения прохода
+      boundAccessEventId:
+        type: string
+        format: uuid
+        description: id связанного события доступа
+    required:
+      - type
+      - occurrenceTime
+  time-control-foul:
+    title: Нарушение учёта рабочего времени
+    type: object
+    properties:
+      type:
+        $ref: '#/definitions/time-control-foul-type'
+      occurrenceTime:
+        type: string
+        description: 'Дата, которая сопоставлена с нарушением учёта рабочего времени'
+        format: date-time
+      boundAccessEventId:
+        type: string
+        description: 'Идентификатор события доступа, который повлёк за собой наручешние учёта рабочего времени'
+        format: uuid
+    required:
+      - type
+      - occurrenceTime
+  missed-outside-schedule-interval:
+    title: Неотработанный интервал вне графика
+    allOf:
+      - $ref: '#/definitions/combined-interval'
+  missed-schedule-interval:
+    title: Неотработанный интервал по графика
+    allOf:
+      - $ref: '#/definitions/schedule-interval'
+  employee-schedule-lunch:
+    title: Обеды графика
+    description: Содержит информацию о начале и конце обедов сотрудника
+    type: object
+    properties:
+      intervalStart:
+        type: string
+        description: Время начала обеда
+        format: date-time
+      intervalEnd:
+        type: string
+        description: Время конца обеда
+        format: date-time
+  combined-interval:
+    title: Объединенный интервал
+    type: object
+    discriminator: intervalType
+    properties:
+      intervalStart:
+        type: string
+        format: date-time
+        description: Время начала интервала
+      intervalEnd:
+        type: string
+        format: date-time
+        description: Время окончания интервала
+      positionId:
+        type: string
+        format: uuid
+        description: id должности
+      timeType:
+        $ref: '#/definitions/interval-time-type'
+      intervalType:
+        type: string
+        description: Тип интервала
+    required:
+      - intervalStart
+      - intervalEnd
+      - timeType
+      - intervalType
+  time-tracking-object:
+    title: Объект
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      name:
+        type: string
+        format: string
+    required:
+      - id
+      - name
+  employee-schedule-work-calendar-event-type:
+    title: Определяет тип дня
+    type: string
+    description: |
+      Определяет тип дня.
+        * `work-day` --- Рабочий день
+        * `shortened-work-day` --- Сокращённый день
+        * `day-off` --- Выходной
+    enum:
+      - work-day
+      - shortened-work-day
+      - day-off
+  employee-fingerprint:
+    title: Отпечаток пальца сотрудника
+    type: object
+    properties:
+      id:
+        type: string
+        description: Идентификатор отпечатка пальца сотрудника
+        format: uuid
+      quality:
+        type: integer
+        description: Качество отпечатка сотрудника
+        minimum: 0
+      template:
+        type: string
+        description: 'Шаблон, связанный с отпечатками пальцев'
+        format: byte
+      manufacturer:
+        type: string
+        description: Источник и формат отпечатка пальца сотрудника
+      type:
+        $ref: '#/definitions/fingerprint-type'
+      employeeId:
+        type: string
+        description: 'Идентификатор сотрудника, которому принадлежит отпечаток'
+        format: uuid
+    required:
+      - id
+      - quality
+      - template
+      - type
+      - employeeId
+  employee-mark:
+    title: Оценка сотрудника
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+        description: id оценки
+      sourceAccountId:
+        type: string
+        format: uuid
+        description: id аккаунта поставившего оценку
+      mark:
+        type: integer
+        format: int64
+        description: оценка
+      dateTime:
+        type: string
+        format: date-time
+        description: время оценки
+      description:
+        type: string
+        description: примечание
+    required:
+      - id
+      - sourceAccountId
+      - mark
+      - dateTime
+  employee-position:
+    title: Позиция сотрудника
+    type: object
+    description: Содержит в себе идентификатор позиции сотрудника и её имя
+    properties:
+      id:
+        type: string
+        description: Идентификатор позиции
+        format: uuid
+      name:
+        type: string
+        description: Название позиции
+    required:
+      - id
+      - name
+  employee-schedule-query:
+    title: Поисковой запрос для графиков сотрудников
+    description: 'Определяет интервал и сотрудников, в рамках которого будет происходить поиск сущностей'
+    type: object
+    properties:
+      range:
+        $ref: '#/definitions/query-range'
+      employeeIds:
+        type: array
+        description: 'Определяет список сотрудников, для которых будет происходит поиск сущностей'
+        uniqueItems: true
+        items:
+          type: string
+          format: uuid
+      returnOpenShifts:
+        type: boolean
+        description: 'Определяет возвращать ли графики не привязанные к конкретному сотруднику'
+  employee-group-query-request:
+    title: Поисковый запрос для групп сотрудников
+    type: object
+    properties:
+      groupIds:
+        type: array
+        description: 'Список идентификаторов групп сотрудников, по которым будет происходить поиск'
+        uniqueItems: true
+        items:
+          type: string
+          format: uuid
+    required:
+      - groupIds
+  employee-paper-query-request:
+    title: Поисковый запрос для инструктажей и справок сотрудников
+    description: Список сотрудников и временной интервал для получения инструктажей и справок
+    type: object
+    properties:
+      employeeIds:
+        type: array
+        description: Определяет список сотрудников для которых будет происходит поиск сущностей
+        uniqueItems: true
+        items:
+          type: string
+          format: uuid
+      range:
+        $ref: '#/definitions/query-range'
+  employee-pass-query-request:
+    title: Поисковый запрос для пропусков сотрудников
+    description: Список сотрудников и временной интервал для получения пропусков
+    type: object
+    properties:
+      employeeIds:
+        type: array
+        description: Определяет список сотрудников для которых будет происходит поиск сущностей
+        uniqueItems: true
+        items:
+          type: string
+          format: uuid
+      range:
+        $ref: '#/definitions/query-range'
+  access-event-query-request:
+    title: Поисковый запрос для событий доступа
+    type: object
+    properties:
+      range:
+        $ref: '#/definitions/query-range'
+      employeeIds:
+        type: array
+        description: 'Определяет список сотрудников, для которых будет происходит поиск сущностей'
+        uniqueItems: true
+        items:
+          type: string
+          format: uuid
+  employee-query-request:
+    title: Поисковый запрос для сотрудников
+    type: object
+    properties:
+      groupIds:
+        type: array
+        uniqueItems: true
+        description: 'Список идентификаторов групп сотрудников, по которым будет осуществляться поиск'
+        items:
+          type: string
+          format: uuid
+  query-range:
+    title: Поисковый интервал
+    description: 'Определяет интервал, в рамках которого будет происходить поиск сущностей'
+    type: object
+    properties:
+      since:
+        type: string
+        description: С какой точки времени начинать поиск
+        format: date-time
+      upTo:
+        type: string
+        description: На какой точке времени заканчивать поиск
+        format: date-time
+  employee-profile-field:
+    title: Поле профиля сотрудника
+    type: object
+    properties:
+      id:
+        type: string
+        description: Идентификатор поля профиля сотрудников
+        format: uuid
+      categoryId:
+        type: string
+        format: uuid
+        description: Идентификатор категории, которой пренадлежит данное поле
+      name:
+        type: string
+        description: Имя поля профиля сотрудников
+      type:
+        $ref: '#/definitions/employee-profile-field-type'
+      required:
+        type: boolean
+        description: Является ли поле обязательным
+      minLength:
+        type: integer
+        description: Минимальная длина
+      maxLength:
+        type: integer
+        description: Максимальная длина
+      regExp:
+        type: string
+        description: Регулярное выражение, которому должно соответствовать значение
+      minValue:
+        type: number
+        format: double
+        description: Минимальное значение
+      maxValue:
+        type: number
+        format: double
+        description: Максимальное значение
+      list:
+        type: array
+        description: Список значений которые может принимать значение поля
+        items:
+          type: string
+    required:
+      - id
+      - categoryId
+      - name
+      - type
+      - required
+  employee-pass:
+    title: Пропуск сотрудника
+    type: object
+    properties:
+      id:
+        type: string
+        description: Идентификатор пропуска сотрудника
+        format: uuid
+      employeeId:
+        type: string
+        description: 'Идентификатор сотрудника, которому принадлежит пропуск'
+        format: uuid
+      banned:
+        type: boolean
+        description: Заблокирован ли пропуск
+      typeId:
+        type: string
+        description: Идентификатор типа пропуска
+        format: uuid
+      startDate:
+        type: string
+        description: Дата начала действия пропуска
+        format: date-time
+      endDate:
+        type: string
+        description: Дата окончания действия пропуска
+        format: date-time
+      currentCount:
+        type: integer
+        description: Текущее количество проходов по пропуску
+        minimum: 0
+        default: 0
+    required:
+      - id
+      - employeeId
+      - banned
+      - typeId
+      - startDate
+      - currentCount
+  manual-interval:
+    title: Ручной интервал
+    allOf:
+      - $ref: '#/definitions/base-work-interval'
+      - type: object
+        properties:
+          overridesSchedule:
+            type: boolean
+            description: 'Ручной интервал перекрывает (отменяет) рабочий график в том месте, в котором они пересекаются'
+          countsAsWorkTime:
+            type: boolean
+            description: Учитывается ли ручной интервал как рабочее время
+          altererAccountId:
+            type: string
+            format: uuid
+            description: 'Идентификатор пользователя, создавшего данный интервал'
+          description:
+            type: string
+            description: Примечание ручного интервала
+        required:
+          - overridesSchedule
+          - countsAsWorkTime
+  access-event:
+    title: Событие доступа
+    type: object
+    description: 'Содержит события о проходе сотрудника через точку доступа одного из контроллеров, зарегистрированных в организации'
+    properties:
+      id:
+        type: string
+        description: Уникальный идентификатор события доступа
+        format: uuid
+      dateTime:
+        type: string
+        description: 'Время, когда это событие было сформировано на контроллере'
+        format: date-time
+      type:
+        $ref: '#/definitions/access-event-type'
+      direction:
+        $ref: '#/definitions/access-event-direction'
+      decisionReason:
+        type: array
+        items:
+          $ref: '#/definitions/access-event-decision-reason-type'
+      coordinates:
+        $ref: '#/definitions/access-event-coordinates'
+      employeeId:
+        type: string
+        description: Идентификатор сотрудника
+        format: uuid
+      deviceId:
+        type: string
+        description: Идентификатор контроллера
+        format: uuid
+      accessPointId:
+        type: string
+        description: Идентификатор точки доступа
+        format: uuid
+      accessRuleId:
+        type: string
+        description: Идентификатор правила доступа
+        format: uuid
+      dataExists:
+        type: boolean
+        description: Существует ли фотография для данного события
+      identifier:
+        $ref: '#/definitions/access-event-identifier'
+      accessReasonValues:
+        type: array
+        description: Список значений причин доступа события доступа
+        items:
+          $ref: '#/definitions/access-event-access-reason-value'
+      documentValues:
+        type: array
+        description: Список значений документов и пропусков события доступа
+        items:
+          $ref: '#/definitions/access-event-document-value'
+    required:
+      - id
+      - dateTime
+      - type
+      - direction
+      - employeeId
+      - deviceId
+      - accessPointId
+      - accessRuleId
+      - dataExists
+      - identifier
+      - accessReasonValues
+      - documentValues
+  access-event-view-model:
+    title: Событие доступа (для сохранения)
+    type: object
+    description: 'Содержит события о проходе сотрудника через точку доступа одного из контроллеров, зарегистрированных в организации'
+    properties:
+      id:
+        type: string
+        description: Уникальный идентификатор события доступа
+        format: uuid
+      dateTime:
+        type: string
+        description: 'Время, когда это событие было сформировано на контроллере'
+        format: date-time
+      type:
+        $ref: '#/definitions/access-event-type'
+      direction:
+        $ref: '#/definitions/access-event-direction'
+      employeeId:
+        type: string
+        description: Идентификатор сотрудника
+        format: uuid
+      accessPointId:
+        type: string
+        description: Идентификатор точки доступа
+        format: uuid
+      identifierType:
+        $ref: '#/definitions/access-event-identifier-type'
+    required:
+      - id
+      - dateTime
+      - type
+      - direction
+      - accessPointId
+  employee:
+    title: Сотрудник
+    type: object
+    properties:
+      id:
+        type: string
+        description: Идентификатор сотрудника
+        format: uuid
+      name:
+        $ref: '#/definitions/employee-name'
+      number:
+        type: string
+        description: Идентификационный номер сотрудника
+      email:
+        type: string
+        description: Адрес электронной почты
+        format: email
+      phone:
+        type: string
+        description: Телефон сотрудника
+      dateOfBirth:
+        type: string
+        description: Дата рождения
+        format: date
+      groupId:
+        type: string
+        description: 'Идентификатор группы сотрудника, которой он принадлежит'
+        format: uuid
+      account:
+        $ref: '#/definitions/employee-account'
+      positionAssignments:
+        type: array
+        description: Список назначений сотрудника на должности
+        uniqueItems: true
+        items:
+          $ref: '#/definitions/employee-position-assignment'
+      partTimePositionAssignments:
+        type: array
+        description: Список временных назначений (совмещений) сотрудника на должности
+        items:
+          $ref: '#/definitions/employee-part-time-position-assignment'
+      currentPositionAssignment:
+        $ref: '#/definitions/employee-position-assignment'
+      currentPartTimePositionAssignments:
+        type: array
+        description: Текущие временные назначения (совмещения) сотрудника
+        uniqueItems: true
+        items:
+          $ref: '#/definitions/employee-part-time-position-assignment'
+      fired:
+        type: boolean
+        description: Уволен ли сотрудник
+      identifiers:
+        $ref: '#/definitions/employee-identifiers'
+      papers:
+        type: array
+        description: Список документов сотрудника
+        uniqueItems: true
+        items:
+          $ref: '#/definitions/employee-paper'
+      passes:
+        type: array
+        description: Список пропусков сотрудника
+        uniqueItems: true
+        items:
+          $ref: '#/definitions/employee-pass'
+      categories:
+        type: array
+        description: Список категорий сотрудника
+        uniqueItems: true
+        items:
+          $ref: '#/definitions/employee-category'
+      profileFieldValues:
+        type: array
+        description: Список значений полей профиля сотрудника
+        uniqueItems: true
+        items:
+          $ref: '#/definitions/employee-profile-field-value'
+      fields:
+        type: array
+        description: Список полей сотрудника
+        uniqueItems: true
+        items:
+          $ref: '#/definitions/employee-field'
+      tags:
+        type: array
+        description: Список меток сотрудника
+        items:
+          $ref: '#/definitions/employee-tag'
+    required:
+      - id
+      - name
+      - groupId
+      - account
+      - positionAssignments
+      - partTimePositionAssignments
+      - currentPartTimePositionAssignments
+      - fired
+      - identifiers
+      - papers
+      - passes
+      - categories
+      - fields
+  work-shift-interval-statistics:
+    title: Статистика рабочего дня
+    type: object
+    description: |
+      Статистика рабочего дня. Содержит предрасчитанные значения отработанного времени, объединённые по различным критериям:
+      * `workTime` --- Общеее отработанное время сотрудника, с учётом всех вычетов (обеды и т.д.) и учтённых внешних причинных интервалов
+      * `timeControlFouls` --- Список нарушений учёта рабочего времени, допущенных за рабочий день
+      * `timeOutsidePosition` --- Время, отработанное вне должностей
+      * `positionTime` --- Словарь, содержащий детализацию отработанного времени по каждой должности, которая была назначена на данный рабочий день
+      * `timeOutsideReasonCategory` ---
+      * `reasonCategoryTime` ---
+      * `timeOutsideReason` ---
+      * `reasonTime` ---
+      * `autoBreakTime` --- Время, автоматически отнятое от рабочего в пользу установленного обеденного перерыва
+      * `totalReasonTime` --- Общее причинное время, отработанное в данном рабочем дне
+      * `totalPositionTime` --- Общее время, отработанное в данный рабочий день по должностям
+      * `totalIntervalTime` --- Общее время (расчитанное по внутренним и внешним интервалам), которое было зарегистрировано системой
+    properties:
+      workTime:
+        $ref: '#/definitions/time-with-required-holder'
+      timeControlFouls:
+        type: array
+        description: Список нарушений учёта рабочего доступа
+        items:
+          $ref: '#/definitions/time-control-foul'
+      timeOutsidePosition:
+        $ref: '#/definitions/time-holder'
+      positionTime:
+        type: object
+        description: |
+          Словарь, содержащий детализацию отработанного времени по каждой должности сотрудника
+        default:
+          $ref: '#/definitions/time-holder'
+        additionalProperties:
+          $ref: '#/definitions/time-holder'
+      timeOutsideReasonCategory:
+        $ref: '#/definitions/time-holder'
+      reasonCategoryTime:
+        type: object
+        description: |
+          Словарь, содержащий детализацию отработанного времени по каждой категории причин сотрудника
+        default:
+          $ref: '#/definitions/time-holder'
+        additionalProperties:
+          $ref: '#/definitions/time-holder'
+      timeOutsideReason:
+        $ref: '#/definitions/time-holder'
+      reasonTime:
+        type: object
+        description: |
+          Словарь, содержащий детализацию отработанного времени по каждой причине сотрудника
+        default:
+          $ref: '#/definitions/time-holder'
+        additionalProperties:
+          $ref: '#/definitions/time-holder'
+      autoBreakTime:
+        $ref: '#/definitions/time-holder'
+      totalReasonTime:
+        $ref: '#/definitions/time-holder'
+      totalPositionTime:
+        $ref: '#/definitions/time-holder'
+      totalIntervalTime:
+        $ref: '#/definitions/time-holder'
+    required:
+      - workTime
+      - timeControlFouls
+      - timeOutsidePosition
+      - positionTime
+      - timeOutsideReasonCategory
+      - reasonCategoryTime
+      - timeOutsideReason
+      - reasonTime
+      - autoBreakTime
+      - totalReasonTime
+      - totalPositionTime
+      - totalIntervalTime
+  employee-account-status:
+    title: Статус аккаунта сотрудника
+    type: string
+    description: |
+      * `active` --- Аккаунт существует и активен
+      * `disabled` --- Аккаут существует и заблокирован
+      * `does-not-exist` --- Аккаунт не существует
+    enum:
+      - active
+      - disabled
+      - does-not-exist
+  time-sheet-employee:
+    title: Табель сотрудника
+    type: object
+    properties:
+      employeeId:
+        type: string
+        format: uuid
+      month:
+        type: string
+        format: date
+      groupId:
+        type: string
+        format: uuid
+      days:
+        type: array
+        items:
+          $ref: '#/definitions/time-sheet-employee-day'
+      comments:
+        type: array
+        items:
+          $ref: '#/definitions/time-sheet-comment'
+    required:
+      - employeeId
+      - month
+      - groupId
+      - days
+  time-sheet-employee-day:
+    title: Табель сотрудника - День
+    type: object
+    properties:
+      dayDate:
+        type: string
+        format: date
+      dayType:
+        type: string
+      accountedTimeMillis:
+        type: integer
+        format: int64
+      accountedTimeHolidayMillis:
+        type: integer
+        format: int64
+      accountedTimeNightMillis:
+        type: integer
+        format: int64
+      accountedOverTimeMillis:
+        type: integer
+        format: int64
+      attended:
+        type: boolean
+      schedulePresent:
+        type: boolean
+      calendarEventIds:
+        type: array
+        uniqueItems: true
+        items:
+          type: string
+          format: uuid
+      comments:
+        type: array
+        items:
+          $ref: '#/definitions/time-sheet-comment'
+    required:
+      - dayDate
+      - dayType
+      - accountedTimeMillis
+      - attended
+      - schedulePresent
+  time-sheet-comment:
+    title: Табель сотрудника - Комментарий
+    type: object
+    properties:
+      accountId:
+        type: string
+        format: uuid
+      value:
+        type: string
+      postDateTime:
+        type: string
+        format: date-time
+    required:
+      - accountId
+      - value
+      - postDateTime
+  employee-rfid-type:
+    title: Тип Rfid сотрудника
+    type: string
+    description: |
+      * `em-marine` --- Em Marine
+      * `mifare-classic` --- Mifare Classic
+      * `mifare-plus` --- Mifare Plus
+      * `mifare` --- Mifare
+      * `unknown` --- Неизвестный тип RFID
+    enum:
+      - em-marine
+      - mifare-classic
+      - mifare-plus
+      - unknown
+      - mifare
+  interval-time-type:
+    title: Тип времени интервала
+    type: string
+    description: |
+      * `day-time` --- Дневное время
+      * `night-time` --- Ночное время
+    enum:
+      - day-time
+      - night-time
+  access-event-document-type:
+    title: Тип документа события доступа
+    type: string
+    description: |
+      * `employee-paper` --- Документ (инструктаж или справка) сотрудника
+      * `employee-pass` --- Пропуск сотрудника
+    enum:
+      - employee-paper
+      - employee-pass
+  employee-paper-type:
+    title: Тип документа сотрудника
+    type: object
+    properties:
+      id:
+        type: string
+        description: Идентификатор типа документа сотрудника
+        format: uuid
+      name:
+        type: string
+        description: Название типа документа сотрудника
+      description:
+        type: string
+        description: Описание типа документа сотрудника
+    required:
+      - id
+      - name
+  access-event-identifier-type:
+    title: Тип идентификатора события доступа
+    type: string
+    description: |
+      Тип идентификатора, который был использован при проходе.
+        * `finger` --- Отпечаток пальца
+        * `rfid` --- RFID-карта
+        * `pin` --- Пин-код
+        * `button` --- Кнопка открытия двери
+        * `button-alarm` --- Кнопка пожарной тревоги
+        * `mac-address` --- MAС-адрес устройства сотрудника
+        * `unknown` --- Идентификатор неизвестен
+    enum:
+      - finger
+      - rfid
+      - pin
+      - button
+      - button-alarm
+      - mac-address
+      - unknown
+  employee-position-assignment-type:
+    title: Тип назначения сотрудника на должность
+    type: string
+    description: |
+      * `hired` --- Принят на работу
+      * `fired` --- Уволен
+      * `transferred` --- Переведён на другую должность
+    enum:
+      - hired
+      - fired
+      - transferred
+  time-calendar-event-type:
+    title: Тип календарного события
+    type: object
+    x-tags:
+      - Time Calendar Events
+    properties:
+      id:
+        type: string
+        format: uuid
+      name:
+        type: string
+      abbreviation:
+        type: string
+      color:
+        type: string
+      requiresConfirmation:
+        type: boolean
+    required:
+      - id
+      - name
+      - requiresConfirmation
+  access-event-access-reason-direction-type:
+    title: Тип направления причины доступа события доступа
+    type: string
+    description: |
+      * `beginning` --- Начало причины
+      * `end` --- Окончание причины
+      * `undefined` --- Направление причины не задано
+    enum:
+      - beginning
+      - end
+      - undefined
+  access-sequence-foul-type:
+    title: Тип нарушения последовательности прохода
+    type: string
+    description: |
+      * `no-linked-out` --- Нет связанного выхода
+      * `no-linked-in` --- Нет связанного входа
+    enum:
+      - no-linked-out
+      - no-linked-in
+  time-control-foul-type:
+    title: Тип нарушения учёта рабочего времени
+    description: |
+      Возможны следующие типы нарушений учёта рабочего времени:
+        * `early-leave` --- Ранний уход
+        * `late-come` --- Опоздание
+        * `ahead-of-time-late-come` --- Индикация опоздания до непосредственного прихода сотрудника
+        * `no-come` --- Неявка на работу
+        * `under-time` --- Недоработка
+        * `lunch-no-come` --- Неявка на обед
+        * `lunch-early-come` --- Ранний приход на обед
+        * `lunch-late-leave` --- Поздний уход с обеда
+        * `lunch-reason-outside-lunch-interval` --- Обед не по расписанию
+    type: string
+    enum:
+      - early-leave
+      - ahead-of-time-late-come
+      - late-come
+      - no-come
+      - under-time
+      - lunch-no-come
+      - lunch-early-come
+      - lunch-late-leave
+      - lunch-reason-outside-lunch-interval
+      - lunch-over-usage
+      - auto-closed
+      - truancy
+  fingerprint-type:
+    title: Тип отпечатка пальца
+    type: string
+    description: |
+      Тип отпечатка пальца.
+        * `left-thumb` --- Левый большой
+        * `left-index` --- Левый указательный
+        * `left-middle` --- Левый средний
+        * `left-ring` --- Левый безымянный
+        * `left-little` --- Левый мезинец
+        * `right-thumb` --- Правый большой
+        * `right-index` --- Правый указательный
+        * `right-middle` --- Правый средний
+        * `right-ring` --- Правый безымянный
+        * `right-little` --- Правый мезинец
+        * `unknown` --- Тип отпечатка пальца неизвестен
+    enum:
+      - left-thumb
+      - left-index
+      - left-middle
+      - left-ring
+      - left-little
+      - right-thumb
+      - right-index
+      - right-middle
+      - right-ring
+      - right-little
+      - unknown
+  employee-profile-field-type:
+    title: Тип поля профиля сотрудника
+    type: string
+    enum:
+      - string
+      - number
+      - list
+      - date
+      - datetime
+      - text
+  access-event-decision-reason-type:
+    title: Тип причины решения события доступа
+    type: string
+    description: |
+      Определяет тип причины, по которой было вынесено запрещающее или разрешающее решение по событию доступа.
+        * `button-pressed` --- Была нажата кнопка, пользователь не идентифицирован
+        * `button-alarm-pressed` --- Была нажата кнопка пожарной тревоги, пользователь не идентифицирован
+        * `card-accepted` --- Картоприёмник получил карту
+        * `access-rule-passed` --- Пройдена проверка по правилу доступа
+        * `wait-next-identifier-timeout` --- Превышено время ожидания ввода пользователем идентификатора
+        * `card-acceptor-timeout` --- Картоприёмник не получил карту за установленный промежуток времени
+        * `alcohol-test-timeout` --- Алкотестер не предоставил результат за установленный промежуток времени
+        * `direction-timeout` --- Превышено время ожидания ввода пользователем направления прохода
+        * `wrong-employee` --- При двойном подтверждении доступа был идентифицирован неверный второй сотрудник
+        * `employee-id-not-found` --- Не найден сотрудник с указанным идентификатором
+        * `access-rule-not-found` --- Не найдено правило доступа для прохода идентифицированного сотрудника
+        * `access-point-not-passed` --- Сотрудник не может пройти через точку доступа, так как она отсутствует в задействованном правиле доступа
+        * `antipassback-not-passed` --- Сотрудник уже проходил в данном направлении. Для сохранения последовательности он должен войти в обратном направлении
+        * `schedule-not-passed` --- Проход не удовлетворяет расписанию проходов --- сотрудник не может проходить по данному правилу доступа в данный промежуток времени
+        * `access-document-not-passed` --- Сотрудник не может пройти, так как один или более из его документов просрочены или не удовлетворяют критериям
+        * `alcohol-test-success` --- Алкотест пройден
+        * `alcohol-test-fail` --- Алкотест не пройден
+        * `employee-is-fired` --- Идентифицированный сотрудник уволен
+        * `employee-pass-not-passed` --- Не пройдена проверка пропуска сотрудника
+        * `employee-paper-not-passed` --- Не пройдена проверка документа (справки, допуска) сотрудника
+        * `location-check-not-passed` --- Не пройдена проверка по близости позиции, заданной в точке доступа и реальной позиции на устройстве
+        * `weight-measurement-test-fail` --- Не пройдена проверка по весу
+        * `weight-measurement-test-success` --- Пройдена проверка по весу
+        * `temperature-test-fail` --- Не пройдена проверка на максимальную температуру
+        * `temperature-test-success` --- Пройдена проверка на максимальную температуру
+        * `mask-test-fail` --- Не пройдена проверка по наличию маски
+        * `mask-test-success` --- Пройдена проверка по наличию маски
+        * `fake-face-test-fail` --- Не пройдена проверка из-за подделки лица
+        * `fake-face-test-success` --- Лицо не было подделано
+        * `failed-to-get-temperature` --- Температура не была получена
+        * `auto-closing-reason-confirmation-required-but-not-present` --- Не было получено разрешение на выход по увольнительной, но оно требуется
+        * `access-point-passed-without-identifier` --- Точка доступа пройдена без предьявления идентификатора
+    enum:
+      - button-pressed
+      - button-alarm-pressed
+      - card-accepted
+      - access-rule-passed
+      - wait-next-identifier-timeout
+      - card-acceptor-timeout
+      - alcohol-test-timeout
+      - direction-timeout
+      - wrong-employee
+      - employee-id-not-found
+      - access-rule-not-found
+      - access-point-not-passed
+      - antipassback-not-passed
+      - schedule-not-passed
+      - access-document-not-passed
+      - alcohol-test-success
+      - alcohol-test-fail
+      - employee-is-fired
+      - employee-pass-not-passed
+      - employee-paper-not-passed
+      - location-check-not-passed
+      - client-photo-verification-failed
+      - client-photo-verification-passed
+      - client-photo-verification-no-response
+      - client-photo-verification-cancel-pressed
+      - client-photo-verification-not-checked
+      - server-photo-verification-failed
+      - server-photo-verification-passed
+      - weight-measurement-test-fail
+      - weight-measurement-test-success
+      - temperature-test-fail
+      - temperature-test-success
+      - mask-test-fail
+      - mask-test-success
+      - fake-face-test-fail
+      - fake-face-test-success
+      - failed-to-get-temperature
+      - auto-closing-reason-confirmation-required-but-not-present
+      - access-point-passed-without-identifier
+  employee-pass-type:
+    title: Тип пропуска сотрудника
+    type: object
+    properties:
+      id:
+        type: string
+        description: Идентификатор типа пропуска сотрудника
+        format: uuid
+      name:
+        type: string
+        description: Имя типа пропуска
+      description:
+        type: string
+        description: Описание типа пропуска
+      maxCount:
+        type: integer
+        description: 'Максимальное количество проходов, при привышении которого пропуск считается невалидным'
+        minimum: 0
+        exclusiveMinimum: true
+    required:
+      - id
+      - name
+  work-shift-type:
+    title: Тип рабочего дня
+    type: string
+    description: |
+      Определяет тип рабочего дня.
+      * `work-day` --- Рабочий день
+      * `day-off` --- Выходной день
+    enum:
+      - work-day
+      - day-off
+      - shortened-work-day
+      - undefined
+  access-event-type:
+    title: Тип события доступа
+    type: string
+    description: |
+      Определяет, был ли проход успешен или нет.
+      * `granted` --- Доступ разрешён
+      * `denied` --- Доступ запрещён
+    enum:
+      - granted
+      - denied
+  access-point:
+    title: Точка доступа
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      name:
+        type: string
+      deviceIds:
+        type: array
+        items:
+          type: string
+          format: uuid
+      mobileDeviceAnonymousPoint:
+        type: boolean
+      coordinates:
+        $ref: '#/definitions/access-point-coordinates'
+    required:
+      - id
+      - name
+      - deviceid
+      - active
+      - mobileDeviceAnonymousPoint
+  time-tracking-contour-access-point:
+    title: Точка прохода контура
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      accessPointId:
+        type: string
+        format: uuid
+      entryDirection:
+        $ref: '#/definitions/access-event-direction'
+    required:
+      - id
+      - accessPointId
+      - entryDirection
+  employee-simplified-output:
+    title: Упрощённое отображение Сотрудника
+    description: Содержит в себе основные поля сотрудника
+    allOf:
+      - type: object
+        properties:
+          id:
+            type: string
+            description: Идентификатор сотрудника
+            format: uuid
+          account:
+            $ref: '#/definitions/employee-account'
+          fired:
+            type: boolean
+            description: Уволен ли сотрудник
+      - $ref: '#/definitions/employee-simplified-input'
+    x-tags:
+      - EmployeesУ
+  time-holder:
+    title: Учет времени
+    type: object
+    properties:
+      totalMillis:
+        type: integer
+        format: int64
+        description: Общее отработанное время
+      dayMillis:
+        type: integer
+        format: int64
+        description: 'Время, отработанное в дневное время'
+      nightMillis:
+        type: integer
+        format: int64
+        description: 'Время, отработанное в ночное время'
+      inScheduleMillis:
+        type: integer
+        format: int64
+        description: 'Время, отработанное по графику'
+      outsideScheduleMillis:
+        type: integer
+        format: int64
+        description: 'Время, отработанное вне графика'
+      dayInScheduleMillis:
+        type: integer
+        format: int64
+        description: 'Время, отработанное в дневное время по графику'
+      nightInScheduleMillis:
+        type: integer
+        format: int64
+        description: 'Время, отработанное в ночное время по графику'
+      nightOutsideScheduleMillis:
+        type: integer
+        format: int64
+        description: 'Время, отработанное в ночное время вне графика'
+      dayOutsideScheduleMillis:
+        type: integer
+        format: int64
+        description: 'Время, отработанное в дневное время вне графика'
+    required:
+      - totalMillis
+      - dayMillis
+      - nightMillis
+      - inScheduleMillis
+      - outsideScheduleMillis
+      - dayInScheduleMillis
+      - nightInScheduleMillis
+      - nightOutsideScheduleMillis
+      - dayOutsideScheduleMillis
+  time-with-required-holder:
+    title: Учет времени требуемого для отработки
+    allOf:
+      - $ref: '#/definitions/time-holder'
+      - type: object
+        properties:
+          requiredByScheduleMillis:
+            type: integer
+            format: int64
+            description: 'Время, необходимое для отработки по графику'
+          requiredByScheduleDayMillis:
+            type: integer
+            format: int64
+            description: 'Время, необходимое для отработки по графику в дневное время'
+          requiredByScheduleNightMillis:
+            type: integer
+            format: int64
+            description: 'Время, необходимое для отработки по графику в ночное время'
+          compensatedTimeMillis:
+            type: integer
+            format: int64
+            description: 'Компенсированное рабочее время -- время, которое не было отработано в графике, но затем было отработано вне его'
+          compensatedTimeDayMillis:
+            type: integer
+            format: int64
+            description: 'Компенстированное рабочее время, отработанное днем'
+          compensatedTimeNightMillis:
+            type: integer
+            format: int64
+            description: 'Компенстированное рабочее время, отработанное ночью'
+          overTimeMillis:
+            type: integer
+            format: int64
+            description: 'Сверхурочное время -- время, которое превышает то, которое требуется графиком на текущий день'
+          overTimeDayMillis:
+            type: integer
+            format: int64
+            description: 'Сверхурочное рабочее время, отработанное днем'
+          overTimeNightMillis:
+            type: integer
+            format: int64
+            description: 'Сверхурочное рабочее время, отработанное ночью'
+          accountedTimeMillis:
+            type: integer
+            format: int64
+            description: 'Результирующее время, которое было учтено системой. В зависимости от настроек учёта может содержать только время по графику, время по графику и компенсированное, или всё отработанное работником время'
+          accountedTimeDayMillis:
+            type: integer
+            format: int64
+            description: Результирующее дневное рабочее время
+          accountedTimeNightMillis:
+            type: integer
+            format: int64
+            description: Результирующее ночное рабочее время
+          accountedTimeHolidayMillis:
+            type: integer
+            format: int64
+            description: Результирующее рабочее время в выходной день
+          absenceOnScheduleTimeMillis:
+            type: integer
+            format: int64
+            description: 'Время отсутствия, зафиксированное по графику'
+          holidayWorkTimeMillis:
+            type: integer
+            format: int64
+            description: 'Время, отработанное в выходные'
+          workTimeForScheduleCompleteMillis:
+            type: integer
+            format: int64
+            description: Время до полного закрытия рабочего графика отработанным временем
+        required:
+          - requiredByScheduleMillis
+          - requiredByScheduleDayMillis
+          - requiredByScheduleNightMillis
+          - compensatedTimeMillis
+          - compensatedTimeDayMillis
+          - compensatedTimeNightMillis
+          - overTimeMillis
+          - overTimeDayMillis
+          - overTimeNightMillis
+          - accountedTimeMillis
+          - accountedTimeDayMillis
+          - accountedTimeNightMillis
+          - accountedTimeHolidayMillis
+          - absenceOnScheduleTimeMillis
+          - holidayWorkTimeMillis
+          - workTimeForScheduleCompleteMillis
+  employee-work-statistics:
+    title: Учёт рабочего времени для сотрудника
+    type: object
+    properties:
+      employeeId:
+        type: string
+        format: uuid
+        description: 'Идентификатор сотрудника, для которого сгенерирована статистика'
+      groupId:
+        type: string
+        format: uuid
+        description: 'Идентификатор группы сотрудника, для которого сгенерирована статистика'
+      computedAt:
+        type: string
+        format: date-time
+        description: 'Время, когда была сгенерирована статистика'
+      workShiftIntervals:
+        type: array
+        description: Список рабочих дней со статистикой
+        items:
+          $ref: '#/definitions/work-shift-interval'
+    required:
+      - employeeId
+      - groupId
+      - computedAt
+      - workShiftIntervals
+tags:
+  - name: Access Events
+    description: События доступа
+  - name: Access Points
+    description: Точки доступа
+  - name: Employee Categories
+    description: Категории сотрудников
+  - name: Employee Groups
+    description: Группы сотрудников
+  - name: Employee Identifiers
+    description: Идентификаторы сотрудников
+  - name: Employee Papers
+    description: Документы сотрудников
+  - name: Employee Passes
+    description: Пропуска сотрудников
+  - name: Employee Photo
+    description: Фото сотрудников
+  - name: Employee Positions
+    description: Должности сотрудников
+  - name: Employee Profile
+  - name: Employee Schedules
+    description: Календарные события и события графика сотрудника
+  - name: Employee Tags
+    description: Метки сотрудников
+  - name: Employees
+    description: Сотрудники
+  - name: Time Sheets
+    description: Табели для сотрудников
+  - name: Time Tracking Objects
+    description: Объекты
+  - name: Time Tracking Statistics
+    description: Статистика учёта рабочего времени
